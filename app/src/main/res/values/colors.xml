@@ -1,0 +1,9 @@
+<resources>
+    <color name="brand_blue">#2364AA</color>
+    <color name="brand_blue_dark">#173F6B</color>
+    <color name="surface_soft">#F5F7FA</color>
+    <color name="text_primary">#16202A</color>
+    <color name="text_secondary">#65717D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="danger">#B3261E</color>
+</resources>
