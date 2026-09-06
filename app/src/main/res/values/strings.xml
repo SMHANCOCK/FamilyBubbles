@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">FamilyBubbles</string>
-    <string name="widget_description">Tap a family member's face to call them.</string>
+    <string name="widget_description">Tap a family member\'s face to call them.</string>
 </resources>
