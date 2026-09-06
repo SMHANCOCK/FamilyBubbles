@@ -3,24 +3,96 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_widget"
-    android:padding="4dp">
+    android:clipToOutline="true"
+    android:paddingLeft="@dimen/widget_padding_horizontal"
+    android:paddingTop="@dimen/widget_padding_vertical"
+    android:paddingRight="@dimen/widget_padding_horizontal"
+    android:paddingBottom="@dimen/widget_padding_vertical">
+
+    <TextView
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom|start"
+        android:alpha="0.68"
+        android:gravity="center"
+        android:text="♥"
+        android:textColor="@color/family_pink"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom|end"
+        android:alpha="0.68"
+        android:gravity="center"
+        android:text="♥"
+        android:textColor="@color/family_green"
+        android:textSize="25sp" />
 
     <LinearLayout
-        android:id="@+id/faceContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/headerRow"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_header_height"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/widgetTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-rounded"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/widget_title"
+                android:textColor="@color/family_navy"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/headerRays"
+                android:layout_width="27dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_header_rays" />
+
+            <ImageView
+                android:id="@+id/familyLogo"
+                android:layout_width="@dimen/widget_logo_width"
+                android:layout_height="@dimen/widget_logo_height"
+                android:layout_marginStart="6dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="FamilyBubbles"
+                android:scaleType="centerInside"
+                android:src="@drawable/familybubbles_logo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/faceContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/emptyState"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="12dp"
-        android:text="Tap to add family"
-        android:textColor="@color/text_primary"
-        android:textSize="15sp"
+        android:fontFamily="sans-serif-rounded"
+        android:padding="48dp"
+        android:text="@string/widget_empty"
+        android:textColor="@color/family_navy"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="gone" />
 </FrameLayout>

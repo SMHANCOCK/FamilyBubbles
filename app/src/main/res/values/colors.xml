@@ -1,9 +1,40 @@
 <resources>
-    <color name="brand_blue">#2364AA</color>
-    <color name="brand_blue_dark">#173F6B</color>
+    <color name="brand_blue">#3997F4</color>
+    <color name="brand_blue_dark">#2364AA</color>
+    <color name="family_navy">#1F2A44</color>
+    <color name="family_pink">#FF5C8A</color>
+    <color name="family_yellow">#FFC83D</color>
+    <color name="family_blue">#59B7FF</color>
+    <color name="family_green">#58C779</color>
+    <color name="family_purple">#9B6AE8</color>
+    <color name="family_orange">#FF8A3D</color>
+    <color name="call_green">#19C86A</color>
+
+    <color name="app_background">#FAFAFC</color>
+    <color name="calling_card_background">#F1F7FF</color>
+    <color name="calling_card_border">#E3EFFD</color>
+    <color name="member_card_background">#FFFFFF</color>
+    <color name="member_card_border">#E8ECF2</color>
+    <color name="edit_action_background">#EAF4FF</color>
+    <color name="delete_action_background">#FFE8EE</color>
+    <color name="mint_action_background">#E3F8EC</color>
+    <color name="empty_card_background">#F5F7FB</color>
+
+    <color name="decor_pink">#FFE2EC</color>
+    <color name="decor_blue">#E5F3FF</color>
+    <color name="decor_green">#E2F8EA</color>
+
+    <color name="widget_background">#FAFAFC</color>
+    <color name="widget_border">#E7EAF0</color>
+    <color name="widget_pink_soft">#FFE2EC</color>
+    <color name="widget_green_soft">#DDF7E7</color>
     <color name="surface_soft">#F5F7FA</color>
-    <color name="text_primary">#16202A</color>
-    <color name="text_secondary">#65717D</color>
+    <color name="text_primary">#1F2A44</color>
+    <color name="text_secondary">#6B7482</color>
     <color name="white">#FFFFFF</color>
-    <color name="danger">#B3261E</color>
+    <color name="danger">#E25A72</color>
+    <color name="contact_card_border">#E8ECF2</color>
+    <color name="edit_icon_background">#EAF4FF</color>
+    <color name="delete_icon_background">#FFE8EE</color>
+    <color name="launcher_black">#000000</color>
 </resources>

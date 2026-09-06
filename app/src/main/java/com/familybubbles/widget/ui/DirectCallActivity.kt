@@ -8,12 +8,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.familybubbles.widget.data.FamilyRepository
 
 class DirectCallActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val phone = intent.getStringExtra(EXTRA_PHONE).orEmpty()
+        // The widget now passes only the internal person ID. The phone number stays in
+        // encrypted app storage rather than being embedded inside a launcher PendingIntent.
+        val personId = intent.getStringExtra(EXTRA_PERSON_ID)
+        val savedPhone = personId?.let { FamilyRepository(this).getPerson(it)?.phone }
+        val legacyPhone = intent.getStringExtra(EXTRA_PHONE)
+        val phone = normalizeForDial(savedPhone ?: legacyPhone.orEmpty())
+
         if (phone.isBlank()) {
             finish()
             return
@@ -33,12 +40,21 @@ class DirectCallActivity : AppCompatActivity() {
                 }
             )
         }.onFailure {
-            Toast.makeText(this, "Couldn't place the call on this device.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Couldn\'t place the call on this device.", Toast.LENGTH_LONG).show()
         }
         finish()
     }
 
+    private fun normalizeForDial(raw: String): String = buildString {
+        raw.forEach { char ->
+            if (char.isDigit() || char == '+' || char == '*' || char == '#' || char == ',' || char == ';') {
+                append(char)
+            }
+        }
+    }
+
     companion object {
-        const val EXTRA_PHONE = "phone"
+        const val EXTRA_PERSON_ID = "person_id"
+        const val EXTRA_PHONE = "phone" // Kept only for backwards compatibility with old widget PendingIntents.
     }
 }

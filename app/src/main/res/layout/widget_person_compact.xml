@@ -6,13 +6,13 @@
     android:layout_weight="1"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="2dp"
-    android:paddingRight="2dp">
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp">
 
     <ImageView
         android:id="@+id/personPhoto"
-        android:layout_width="@dimen/widget_face_large_width"
-        android:layout_height="@dimen/widget_face_large_height"
+        android:layout_width="@dimen/widget_face_compact_width"
+        android:layout_height="@dimen/widget_face_compact_height"
         android:contentDescription="@string/call_family_member"
         android:scaleType="fitCenter" />
 
@@ -26,6 +26,6 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:textColor="@color/family_navy"
-        android:textSize="13sp"
+        android:textSize="11.5sp"
         android:textStyle="bold" />
 </LinearLayout>

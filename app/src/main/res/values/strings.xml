@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">FamilyBubbles</string>
     <string name="widget_description">Tap a family member\'s face to call them.</string>
+
+    <string name="intro_heading">Set up the people your child can call.</string>
+    <string name="intro_supporting">The home-screen widget stays simple:\nface, name, tap to call.</string>
+    <string name="one_tap_calling">One-tap calling</string>
+    <string name="one_tap_ready">Ready. Tapping a face on the widget will immediately place the call.</string>
+    <string name="one_tap_permission_needed">Permission is needed before the widget can place a call without opening the dialler.</string>
+    <string name="allow_calls">ALLOW CALLS</string>
+    <string name="family_members">Family members</string>
+    <string name="add_person">ADD PERSON</string>
+    <string name="empty_people">No one added yet.\nTap ADD PERSON to get started.</string>
+    <string name="setup_help">After setup: long-press your home screen → Widgets → FamilyBubbles</string>
+    <string name="contact_photo_description">Family member photo</string>
+    <string name="edit_person_description">Edit %1$s</string>
+    <string name="delete_person_description">Delete %1$s</string>
+    <string name="edit_generic">Edit</string>
+    <string name="delete_generic">Delete</string>
+    <string name="widget_title">Tap a face to call</string>
+    <string name="widget_empty">Tap to add family</string>
+    <string name="call_family_member">Call family member</string>
 </resources>

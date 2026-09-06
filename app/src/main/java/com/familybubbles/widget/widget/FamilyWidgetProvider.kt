@@ -6,8 +6,11 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import com.familybubbles.widget.R
 import com.familybubbles.widget.data.FamilyRepository
 import com.familybubbles.widget.ui.DirectCallActivity
@@ -17,6 +20,16 @@ import com.familybubbles.widget.ui.MainActivity
 class FamilyWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         appWidgetIds.forEach { widgetId -> updateWidget(context, appWidgetManager, widgetId) }
+    }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        updateWidget(context, appWidgetManager, appWidgetId)
     }
 
     companion object {
@@ -35,7 +48,29 @@ class FamilyWidgetProvider : AppWidgetProvider() {
             val root = RemoteViews(context.packageName, R.layout.widget_family)
             root.removeAllViews(R.id.faceContainer)
 
+            val options = manager.getAppWidgetOptions(widgetId)
+            val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 250)
+            val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 150)
+            val twoRows = people.size > PEOPLE_PER_ROW
+
+            val itemLayout = when {
+                twoRows && minHeight < 185 -> R.layout.widget_person_tiny
+                twoRows || minWidth < 285 -> R.layout.widget_person_compact
+                else -> R.layout.widget_person
+            }
+            val renderSize = when (itemLayout) {
+                R.layout.widget_person_tiny -> 240
+                R.layout.widget_person_compact -> 280
+                else -> 320
+            }
+            root.setTextViewTextSize(
+                R.id.widgetTitle,
+                TypedValue.COMPLEX_UNIT_SP,
+                if (minWidth < 245) 16f else 20f
+            )
+
             if (people.isEmpty()) {
+                root.setViewVisibility(R.id.faceContainer, View.GONE)
                 root.setViewVisibility(R.id.emptyState, View.VISIBLE)
                 root.setOnClickPendingIntent(
                     R.id.emptyState,
@@ -47,26 +82,45 @@ class FamilyWidgetProvider : AppWidgetProvider() {
                     )
                 )
             } else {
+                root.setViewVisibility(R.id.faceContainer, View.VISIBLE)
                 root.setViewVisibility(R.id.emptyState, View.GONE)
+
+                val palette = intArrayOf(
+                    R.color.family_pink,
+                    R.color.family_yellow,
+                    R.color.family_blue,
+                    R.color.family_green,
+                    R.color.family_purple,
+                    R.color.family_orange
+                )
+
                 people.chunked(PEOPLE_PER_ROW).forEachIndexed { rowIndex, rowPeople ->
                     val row = RemoteViews(context.packageName, R.layout.widget_row)
                     row.removeAllViews(R.id.rowContainer)
 
                     rowPeople.forEachIndexed { columnIndex, person ->
-                        val item = RemoteViews(context.packageName, R.layout.widget_person)
+                        val absoluteIndex = rowIndex * PEOPLE_PER_ROW + columnIndex
+                        val item = RemoteViews(context.packageName, itemLayout)
                         item.setTextViewText(R.id.personName, person.name)
-                        val raw = ImageUtils.loadBitmap(person.photoPath, 256)
-                        val face = if (raw != null) {
-                            ImageUtils.circleCrop(raw, 220)
-                        } else {
-                            ImageUtils.placeholder(220, person.name.take(2))
-                        }
-                        item.setImageViewBitmap(R.id.personPhoto, face)
 
-                        val requestCode = widgetId * 100 + rowIndex * 10 + columnIndex
+                        val accentColor = ContextCompat.getColor(
+                            context,
+                            palette[absoluteIndex % palette.size]
+                        )
+                        val bubble = ImageUtils.contactBubble(
+                            context = context,
+                            photoPath = person.photoPath,
+                            initials = person.name,
+                            borderColor = accentColor,
+                            accentStyle = absoluteIndex,
+                            size = renderSize
+                        )
+                        item.setImageViewBitmap(R.id.personPhoto, bubble)
+
+                        val requestCode = 31 * widgetId + person.id.hashCode()
                         val callIntent = Intent(context, DirectCallActivity::class.java).apply {
-                            putExtra(DirectCallActivity.EXTRA_PHONE, person.phone)
-                            putExtra("person_id", person.id)
+                            action = "com.familybubbles.widget.CALL.${person.id}"
+                            putExtra(DirectCallActivity.EXTRA_PERSON_ID, person.id)
                         }
                         val pendingCall = PendingIntent.getActivity(
                             context,
@@ -74,6 +128,8 @@ class FamilyWidgetProvider : AppWidgetProvider() {
                             callIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                         )
+
+                        // The whole family tile is deliberately a large child-friendly target.
                         item.setOnClickPendingIntent(R.id.personRoot, pendingCall)
                         item.setOnClickPendingIntent(R.id.personPhoto, pendingCall)
                         item.setOnClickPendingIntent(R.id.personName, pendingCall)

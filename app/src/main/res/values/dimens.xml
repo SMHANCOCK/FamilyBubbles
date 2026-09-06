@@ -1,3 +1,24 @@
 <resources>
-    <dimen name="screen_padding">20dp</dimen>
+    <dimen name="screen_padding">22dp</dimen>
+    <dimen name="section_spacing">28dp</dimen>
+    <dimen name="content_top_padding">14dp</dimen>
+    <dimen name="content_bottom_padding">24dp</dimen>
+    <dimen name="footer_top_spacing">46dp</dimen>
+    <dimen name="logo_height">146dp</dimen>
+    <dimen name="card_corner_radius">24dp</dimen>
+    <dimen name="member_avatar_size">72dp</dimen>
+    <dimen name="action_touch_size">50dp</dimen>
+
+    <dimen name="widget_corner_radius">30dp</dimen>
+    <dimen name="widget_padding_horizontal">12dp</dimen>
+    <dimen name="widget_padding_vertical">8dp</dimen>
+    <dimen name="widget_header_height">46dp</dimen>
+    <dimen name="widget_logo_width">54dp</dimen>
+    <dimen name="widget_logo_height">44dp</dimen>
+    <dimen name="widget_face_large_width">96dp</dimen>
+    <dimen name="widget_face_large_height">104dp</dimen>
+    <dimen name="widget_face_compact_width">76dp</dimen>
+    <dimen name="widget_face_compact_height">84dp</dimen>
+    <dimen name="widget_face_tiny_width">58dp</dimen>
+    <dimen name="widget_face_tiny_height">64dp</dimen>
 </resources>

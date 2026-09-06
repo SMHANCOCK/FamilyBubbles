@@ -38,6 +38,8 @@ class PersonAdapter(
             } else {
                 binding.photoView.setImageBitmap(ImageUtils.placeholder(180, person.name.take(2)))
             }
+            binding.editButton.contentDescription = binding.root.context.getString(com.familybubbles.widget.R.string.edit_person_description, person.name)
+            binding.deleteButton.contentDescription = binding.root.context.getString(com.familybubbles.widget.R.string.delete_person_description, person.name)
             binding.editButton.setOnClickListener { onEdit(person) }
             binding.deleteButton.setOnClickListener { onDelete(person) }
         }

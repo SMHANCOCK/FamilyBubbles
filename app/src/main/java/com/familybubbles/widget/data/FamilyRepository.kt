@@ -10,23 +10,17 @@ class FamilyRepository(context: Context) {
     private val prefs = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun getPeople(): List<FamilyPerson> {
-        val raw = prefs.getString(KEY_PEOPLE, null) ?: return emptyList()
-        return runCatching {
-            val array = JSONArray(raw)
-            buildList {
-                for (index in 0 until array.length()) {
-                    val item = array.getJSONObject(index)
-                    add(
-                        FamilyPerson(
-                            id = item.getString("id"),
-                            name = item.getString("name"),
-                            phone = item.getString("phone"),
-                            photoPath = item.optString("photoPath").takeIf { it.isNotBlank() }
-                        )
-                    )
-                }
-            }
-        }.getOrDefault(emptyList())
+        val encrypted = prefs.getString(KEY_PEOPLE_ENCRYPTED, null)
+        if (!encrypted.isNullOrBlank()) {
+            val decrypted = LocalDataCipher.decrypt(encrypted) ?: return emptyList()
+            return parsePeople(decrypted)
+        }
+
+        // One-time transparent migration from the original plaintext SharedPreferences value.
+        val legacy = prefs.getString(KEY_PEOPLE_LEGACY, null) ?: return emptyList()
+        val people = parsePeople(legacy)
+        runCatching { persist(people) }
+        return people
     }
 
     fun getPerson(id: String): FamilyPerson? = getPeople().firstOrNull { it.id == id }
@@ -60,11 +54,34 @@ class FamilyRepository(context: Context) {
                 }
             )
         }
-        prefs.edit().putString(KEY_PEOPLE, array.toString()).apply()
+
+        val encrypted = LocalDataCipher.encrypt(array.toString())
+        prefs.edit()
+            .putString(KEY_PEOPLE_ENCRYPTED, encrypted)
+            .remove(KEY_PEOPLE_LEGACY)
+            .apply()
     }
+
+    private fun parsePeople(raw: String): List<FamilyPerson> = runCatching {
+        val array = JSONArray(raw)
+        buildList {
+            for (index in 0 until array.length()) {
+                val item = array.getJSONObject(index)
+                add(
+                    FamilyPerson(
+                        id = item.getString("id"),
+                        name = item.getString("name"),
+                        phone = item.getString("phone"),
+                        photoPath = item.optString("photoPath").takeIf { it.isNotBlank() }
+                    )
+                )
+            }
+        }
+    }.getOrDefault(emptyList())
 
     companion object {
         private const val PREFS_NAME = "family_faces_data"
-        private const val KEY_PEOPLE = "people"
+        private const val KEY_PEOPLE_LEGACY = "people"
+        private const val KEY_PEOPLE_ENCRYPTED = "people_encrypted_v1"
     }
 }

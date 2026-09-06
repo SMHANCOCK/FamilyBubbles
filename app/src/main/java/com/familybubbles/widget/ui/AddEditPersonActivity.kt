@@ -62,6 +62,7 @@ class AddEditPersonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddEditPersonBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applyFamilyBubblesSystemInsets(binding.root)
 
         repository = FamilyRepository(this)
         val existingId = intent.getStringExtra(EXTRA_PERSON_ID)

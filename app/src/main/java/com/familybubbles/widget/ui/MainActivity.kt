@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        applyFamilyBubblesSystemInsets(binding.root)
 
         repository = FamilyRepository(this)
         adapter = PersonAdapter(
@@ -59,9 +60,9 @@ class MainActivity : AppCompatActivity() {
     private fun updatePermissionCard() {
         val granted = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
         binding.permissionStatus.text = if (granted) {
-            "Ready. Tapping a face on the widget will immediately place the call."
+            getString(com.familybubbles.widget.R.string.one_tap_ready)
         } else {
-            "Permission is needed before the widget can place a call without opening the dialler."
+            getString(com.familybubbles.widget.R.string.one_tap_permission_needed)
         }
         binding.permissionButton.visibility = if (granted) View.GONE else View.VISIBLE
     }
