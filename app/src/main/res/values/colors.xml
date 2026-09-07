@@ -28,6 +28,7 @@
     <color name="widget_border">#E7EAF0</color>
     <color name="widget_pink_soft">#FFE2EC</color>
     <color name="widget_green_soft">#DDF7E7</color>
+    <color name="widget_blue_soft">#DFF1FF</color>
     <color name="surface_soft">#F5F7FA</color>
     <color name="text_primary">#1F2A44</color>
     <color name="text_secondary">#6B7482</color>

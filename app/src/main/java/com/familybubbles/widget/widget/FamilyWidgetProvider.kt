@@ -54,19 +54,20 @@ class FamilyWidgetProvider : AppWidgetProvider() {
             val twoRows = people.size > PEOPLE_PER_ROW
 
             val itemLayout = when {
-                twoRows && minHeight < 185 -> R.layout.widget_person_tiny
-                twoRows || minWidth < 285 -> R.layout.widget_person_compact
+                twoRows && minHeight < 195 -> R.layout.widget_person_tiny
+                minWidth < 255 -> R.layout.widget_person_tiny
+                twoRows || minWidth < 315 || minHeight < 170 -> R.layout.widget_person_compact
                 else -> R.layout.widget_person
             }
             val renderSize = when (itemLayout) {
-                R.layout.widget_person_tiny -> 240
-                R.layout.widget_person_compact -> 280
-                else -> 320
+                R.layout.widget_person_tiny -> 300
+                R.layout.widget_person_compact -> 360
+                else -> 420
             }
             root.setTextViewTextSize(
                 R.id.widgetTitle,
                 TypedValue.COMPLEX_UNIT_SP,
-                if (minWidth < 245) 16f else 20f
+                if (minWidth < 245) 15.5f else 19f
             )
 
             if (people.isEmpty()) {

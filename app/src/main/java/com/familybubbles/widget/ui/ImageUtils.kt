@@ -44,10 +44,13 @@ object ImageUtils {
         val canvas = Canvas(bitmap)
         val scale = size / 320f
 
+        // Use more of the bitmap for the actual face. The previous geometry left
+        // too much transparent space around the bubble, which made the contact
+        // feel timid once RemoteViews scaled the bitmap into the widget.
         val cx = 160f * scale
-        val cy = 143f * scale
-        val outerRadius = 101f * scale
-        val innerRadius = 88f * scale
+        val cy = 137f * scale
+        val outerRadius = 116f * scale
+        val innerRadius = 101f * scale
 
         drawAccentRays(canvas, borderColor, accentStyle, scale)
 
@@ -75,9 +78,12 @@ object ImageUtils {
             canvas.drawText(label, cx, baseline, textPaint)
         }
 
+        // A deliberately oversized phone badge overlaps the lower edge of the
+        // face so children can recognise the action instantly. The entire tile
+        // remains clickable in FamilyWidgetProvider.
         val badgeCx = cx
         val badgeCy = 232f * scale
-        val badgeRadius = 36f * scale
+        val badgeRadius = 43f * scale
         canvas.drawCircle(
             badgeCx,
             badgeCy + 4f * scale,
@@ -92,7 +98,7 @@ object ImageUtils {
         )
 
         AppCompatResources.getDrawable(context, R.drawable.ic_phone_green)?.let { drawable ->
-            val half = (19f * scale).toInt()
+            val half = (24f * scale).toInt()
             drawable.setBounds(
                 badgeCx.toInt() - half,
                 badgeCy.toInt() - half,
@@ -108,25 +114,25 @@ object ImageUtils {
     private fun drawAccentRays(canvas: Canvas, color: Int, accentStyle: Int, scale: Float) {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.color = color
-            strokeWidth = 9f * scale
+            strokeWidth = 10f * scale
             strokeCap = Paint.Cap.ROUND
         }
 
         when (accentStyle % 3) {
             0 -> {
-                canvas.drawLine(55f * scale, 52f * scale, 39f * scale, 38f * scale, paint)
-                canvas.drawLine(73f * scale, 36f * scale, 66f * scale, 17f * scale, paint)
-                canvas.drawLine(91f * scale, 34f * scale, 95f * scale, 14f * scale, paint)
+                canvas.drawLine(46f * scale, 54f * scale, 29f * scale, 40f * scale, paint)
+                canvas.drawLine(63f * scale, 35f * scale, 55f * scale, 14f * scale, paint)
+                canvas.drawLine(84f * scale, 28f * scale, 84f * scale, 7f * scale, paint)
             }
             1 -> {
-                canvas.drawLine(137f * scale, 30f * scale, 132f * scale, 9f * scale, paint)
-                canvas.drawLine(160f * scale, 25f * scale, 160f * scale, 3f * scale, paint)
-                canvas.drawLine(183f * scale, 30f * scale, 190f * scale, 10f * scale, paint)
+                canvas.drawLine(136f * scale, 22f * scale, 130f * scale, 3f * scale, paint)
+                canvas.drawLine(160f * scale, 18f * scale, 160f * scale, 0f * scale, paint)
+                canvas.drawLine(184f * scale, 22f * scale, 191f * scale, 3f * scale, paint)
             }
             else -> {
-                canvas.drawLine(229f * scale, 34f * scale, 225f * scale, 14f * scale, paint)
-                canvas.drawLine(247f * scale, 37f * scale, 255f * scale, 18f * scale, paint)
-                canvas.drawLine(264f * scale, 52f * scale, 281f * scale, 39f * scale, paint)
+                canvas.drawLine(236f * scale, 29f * scale, 238f * scale, 8f * scale, paint)
+                canvas.drawLine(258f * scale, 37f * scale, 267f * scale, 17f * scale, paint)
+                canvas.drawLine(274f * scale, 55f * scale, 291f * scale, 42f * scale, paint)
             }
         }
     }
